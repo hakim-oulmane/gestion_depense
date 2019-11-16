@@ -1,6 +1,11 @@
+import 'package:expenditure_management/Model/RecordModel.dart';
 import 'package:flutter/material.dart';
 
 class AddRevenu extends StatefulWidget {
+
+  RecordModel recordModel;
+  AddRevenu(this.recordModel);
+
   @override
   State<StatefulWidget> createState() => _AddRevenuState();
 

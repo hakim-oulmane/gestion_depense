@@ -49,22 +49,27 @@ class _DrawerState extends  State<DrawerPage>{
             ListTile(
               title: Text("Mes revenus"),
               leading: Icon(Icons.account_balance_wallet, color: FIRST_COLOR,),
-              onTap: () => debugPrint("Accueil"),
+              onTap: () => debugPrint("revenus"),
             ),
             ListTile(
               title: Text("Mes dépenses"),
               leading: Icon(Icons.local_atm, color: SECOND_COLOR,),
-              onTap: () => debugPrint("Accueil"),
+              onTap: () => debugPrint("dépenses"),
             ),
             ListTile(
               title: Text("Statistiques"),
               leading: Icon(Icons.insert_chart),
-              onTap: () => debugPrint("Accueil"),
+              onTap: () => debugPrint("Statistiques"),
+            ),
+            ListTile(
+              title: Text("Paramètre"),
+              leading: Icon(Icons.settings),
+              onTap: () => debugPrint("Paramètre"),
             ),
             ListTile(
               title: Text("À propos",),
               leading: Icon(Icons.info),
-              onTap: () => debugPrint("Accueil"),
+              onTap: () => debugPrint("propos"),
             ),
 
           ],

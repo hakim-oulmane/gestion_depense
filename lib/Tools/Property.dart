@@ -24,3 +24,9 @@ List<Map> CATEGORIE_DEPENSE = [
   {"name": "Voiture", "icon": Icons.drive_eta},
   {"name": "Autres", "icon": Icons.help},
 ];
+
+List<Map> CATEGORIE_REVENU = [
+  {"name": "Salaire", "icon": Icons.monetization_on},
+  {"name": "Prêt", "icon": Icons.thumb_up},
+  {"name": "Donation", "icon": Icons.redeem},
+];

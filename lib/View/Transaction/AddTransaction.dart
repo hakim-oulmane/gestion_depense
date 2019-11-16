@@ -1,4 +1,6 @@
+import 'package:expenditure_management/Model/RecordModel.dart';
 import 'package:expenditure_management/Tools/Property.dart';
+import 'package:expenditure_management/View/Home/MyHomepage.dart';
 import 'package:expenditure_management/components/AppBar.dart';
 import 'package:expenditure_management/components/Drawer.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,9 @@ import 'AddDepense.dart';
 import 'AddRevenu.dart';
 
 class AddTransaction extends StatefulWidget {
+  RecordModel recordModel;
+  AddTransaction(this.recordModel);
+
   @override
   State<StatefulWidget> createState() => _AddTransactionState();
 
@@ -41,8 +46,8 @@ class _AddTransactionState extends State<AddTransaction> {
           ),
           body: TabBarView(
             children: [
-              AddDepense(),
-              AddRevenu(),
+              AddDepense(widget.recordModel),
+              AddRevenu(widget.recordModel),
             ],
           ),
         ),

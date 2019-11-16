@@ -1,8 +1,11 @@
+import 'package:expenditure_management/Model/RecordModel.dart';
 import 'package:expenditure_management/View/Transaction/AddTransaction.dart';
 import 'package:expenditure_management/components/AppBar.dart';
 import 'package:expenditure_management/components/Drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:expenditure_management/Tools/Property.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'BodyHomePage.dart';
 
 class MyApp extends StatelessWidget {
@@ -10,6 +13,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('fr'), // French
+        const Locale('en'), // English
+      ],
       debugShowCheckedModeBanner: false,
       title: 'Gestion des dépenses',
       theme: ThemeData(
@@ -35,28 +46,38 @@ class MyHomePage extends StatefulWidget{
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  RecordModel _recordModel;
+
   @override
-  void initState() => super.initState();
+  void initState() {
+    ///load the list of records
+    _recordModel = RecordModel();
+    _recordModel.loadListRecord();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
 
     return SafeArea(
-      child: Scaffold(
-        //app bar
-        appBar: AppBarPage.getAppBar("Accueil"),
+      child: ScopedModel(
+        model: _recordModel,
+        child: Scaffold(
+          //app bar
+          appBar: AppBarPage.getAppBar("Accueil"),
 
-        //drawer
-        drawer: DrawerPage(),
+          //drawer
+          drawer: DrawerPage(),
 
-        //body
-        body: BodyHomePage(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AddTransaction())),
-          child: Icon(Icons.add),
-          backgroundColor: Colors.red,
-          tooltip: "Ajoutez une transaction",
+          //body
+          body: BodyHomePage(_recordModel),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AddTransaction(_recordModel))),
+            child: Icon(Icons.add),
+            backgroundColor: Colors.red,
+            tooltip: "Ajoutez une transaction",
+          ),
         ),
       ),
     );
