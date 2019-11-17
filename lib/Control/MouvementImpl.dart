@@ -13,7 +13,7 @@ class MouvementImpl implements MouvementRepository {
     Database db = await DBConnect().database;
     List<Map> list = await db.rawQuery('SELECT m.id, m.categorie, c.sign, amount, '
         'description, datetime, deleted FROM mouvement m, categorie c WHERE m.categorie = c.name '
-        'ORDER BY year, month, day, hour, minute');
+        'AND deleted = 0 ORDER BY year, month, day, hour, minute');
 
     List<Mouvement> depenses = List();
 
@@ -29,18 +29,6 @@ class MouvementImpl implements MouvementRepository {
       depenses.add(object);
     }
     return depenses;
-  }
-
-  @override
-  Future<Map> getMouvementById(int id) {
-    // TODO: implement getMouvementById
-    return null;
-  }
-
-  @override
-  Future<Map> getMouvementByType(String type) {
-    // TODO: implement getMouvementByType
-    return null;
   }
 
   @override
@@ -63,5 +51,26 @@ class MouvementImpl implements MouvementRepository {
       );
     });
     return id;
+  }
+
+  @override
+  Future<int> deleteMouvement(int id) async {
+    // TODO: implement deleteMouvement
+    Database db = await DBConnect().database;
+    return await db.rawUpdate('UPDATE mouvement SET deleted = 1 WHERE id = ?', [id]);
+  }
+
+  @override
+  Future<int> cancelDeletedMouvement(int id) async{
+    // TODO: implement cancelDeletedMouvement
+    Database db = await DBConnect().database;
+    return await db.rawUpdate('UPDATE mouvement SET deleted = 0 WHERE id = ?', [id]);
+  }
+
+  @override
+  Future<int> resetDB() async {
+    // TODO: implement resetDB
+    Database db = await DBConnect().database;
+    return await db.rawDelete('DELETE FROM mouvement');
   }
 }

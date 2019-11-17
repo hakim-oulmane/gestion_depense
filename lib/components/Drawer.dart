@@ -1,8 +1,12 @@
 
-import 'package:expenditure_management/Tools/Property.dart';
+import 'package:expenditure_management/Model/RecordModel.dart';
+import 'package:expenditure_management/View/Home/MyHomepage.dart';
+import 'package:expenditure_management/View/MyTransaction/MyTransaction.dart';
+import 'package:expenditure_management/View/Paramaitre/Parameter.dart';
 import 'package:flutter/material.dart';
 
 class DrawerPage extends StatefulWidget {
+
   @override
   _DrawerState createState() => _DrawerState();
 }
@@ -43,32 +47,30 @@ class _DrawerState extends  State<DrawerPage>{
 
             ListTile(
               title: Text("Accueil"),
-              leading: Icon(Icons.home),
-              onTap: () => debugPrint("Accueil"),
+              leading: Icon(Icons.home, color: Colors.black54,),
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MyHomePage())),
             ),
             ListTile(
-              title: Text("Mes revenus"),
-              leading: Icon(Icons.account_balance_wallet, color: FIRST_COLOR,),
-              onTap: () => debugPrint("revenus"),
-            ),
-            ListTile(
-              title: Text("Mes dépenses"),
-              leading: Icon(Icons.local_atm, color: SECOND_COLOR,),
-              onTap: () => debugPrint("dépenses"),
+              title: Text("Mes transactions"),
+              leading: Icon(Icons.local_atm, color: Colors.black54,),
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MyTransaction())),
             ),
             ListTile(
               title: Text("Statistiques"),
-              leading: Icon(Icons.insert_chart),
+              leading: Icon(Icons.insert_chart, color: Colors.brown,),
               onTap: () => debugPrint("Statistiques"),
             ),
             ListTile(
               title: Text("Paramètre"),
-              leading: Icon(Icons.settings),
-              onTap: () => debugPrint("Paramètre"),
+              leading: Icon(Icons.settings, color: Colors.brown,),
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Parameter())),
             ),
             ListTile(
               title: Text("À propos",),
-              leading: Icon(Icons.info),
+              leading: Icon(Icons.info, color: Colors.brown,),
               onTap: () => debugPrint("propos"),
             ),
 

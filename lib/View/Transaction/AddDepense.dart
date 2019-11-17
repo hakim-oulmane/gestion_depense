@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:expenditure_management/Control/CategorieImpl.dart';
 import 'package:expenditure_management/Control/MouvementImpl.dart';
-import 'package:expenditure_management/Model/Mouvement.dart';
 import 'package:expenditure_management/Model/RecordModel.dart';
 import 'package:expenditure_management/Tools/Methods.dart';
 import 'package:expenditure_management/Tools/Property.dart';
@@ -69,7 +67,7 @@ class _AddDepenseState extends State<AddDepense> {
 
   Widget get title {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 20),
+      margin: EdgeInsets.only(bottom: 20),
       child: Text("Ajouter des dépenses", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
     );
   }
@@ -215,8 +213,8 @@ class _AddDepenseState extends State<AddDepense> {
       dateFormat: _format,
       pickerTheme: DateTimePickerTheme(
         showTitle: true,
-        cancel: Text("Annuler"),
-        confirm: Text("Ok", style: TextStyle(color: FIRST_COLOR),),
+        cancel: Text("Annuler", style: TextStyle(color: SECOND_COLOR), textScaleFactor: 1.3,),
+        confirm: Text("Ok", style: TextStyle(color: FIRST_COLOR), textScaleFactor: 1.3,),
       ),
       pickerMode: DateTimePickerMode.datetime,
       onConfirm: (dateTime, List<int> index) {
@@ -252,7 +250,7 @@ class _AddDepenseState extends State<AddDepense> {
 
   Widget get button{
     return Container(
-      alignment: Alignment.centerRight,
+      alignment: Alignment.center,
       margin: EdgeInsets.only(top: 20),
       child: RaisedButton(
         onPressed: () => valideForm(),
@@ -277,21 +275,28 @@ class _AddDepenseState extends State<AddDepense> {
       "datetime": _dateTime
     };
 
-    int id = await MouvementImpl().insertMouvement(data);
-    if(id != null){
-      showToast("Dépense enregistrée");
-      ///load the list of records
-      widget.recordModel.loadListRecord();
-
-      ///reset content form
-      setState(() {
-        _montantControl.clear();
-        _categorieValue = "Nourriture";
-        _descriptionControl.clear();
-      });
-    }
-    else
+    Future future = MouvementImpl().insertMouvement(data);
+    future.timeout(Duration(seconds: 5),onTimeout: () {
       showToast("Echec de l'opération");
+    });
+    future.then((id) {
+      if(id != null && id > 0){
+        showToast("Dépense enregistrée");
+        ///load the list of records
+        widget.recordModel.loadListRecord();
+
+        ///reset content form
+        setState(() {
+          _montantControl.clear();
+          _categorieValue = "Nourriture";
+          _descriptionControl.clear();
+        });
+      }
+      else
+        showToast("Echec de l'opération");
+    }, onError: (e) {
+      showToast("Echec de l'opération");
+    });
   }
 
   ///display a toast

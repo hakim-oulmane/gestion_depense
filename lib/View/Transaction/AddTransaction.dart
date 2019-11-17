@@ -1,6 +1,5 @@
 import 'package:expenditure_management/Model/RecordModel.dart';
 import 'package:expenditure_management/Tools/Property.dart';
-import 'package:expenditure_management/View/Home/MyHomepage.dart';
 import 'package:expenditure_management/components/AppBar.dart';
 import 'package:expenditure_management/components/Drawer.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,8 @@ import 'AddRevenu.dart';
 
 class AddTransaction extends StatefulWidget {
   RecordModel recordModel;
-  AddTransaction(this.recordModel);
+  final int index;
+  AddTransaction(this.recordModel, [this.index]);
 
   @override
   State<StatefulWidget> createState() => _AddTransactionState();
@@ -25,6 +25,7 @@ class _AddTransactionState extends State<AddTransaction> {
     return SafeArea(
       child: DefaultTabController(
         length: 2,
+        initialIndex: widget.index ?? 0,
         child: Scaffold(
           appBar: AppBarPage.getAppBar("Nouvelle transaction"),
           drawer: DrawerPage(),

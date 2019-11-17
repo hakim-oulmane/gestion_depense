@@ -62,23 +62,25 @@ class _MyHomePageState extends State<MyHomePage> {
     return SafeArea(
       child: ScopedModel(
         model: _recordModel,
-        child: Scaffold(
-          //app bar
-          appBar: AppBarPage.getAppBar("Accueil"),
+        child: ScopedModelDescendant<RecordModel>( builder: (context, child, model) {
+          return Scaffold(
+            //app bar
+            appBar: AppBarPage.getAppBar("Accueil"),
 
-          //drawer
-          drawer: DrawerPage(),
+            //drawer
+            drawer: DrawerPage(),
 
-          //body
-          body: BodyHomePage(_recordModel),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AddTransaction(_recordModel))),
-            child: Icon(Icons.add),
-            backgroundColor: Colors.red,
-            tooltip: "Ajoutez une transaction",
-          ),
-        ),
+            //body
+            body: BodyHomePage(model),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AddTransaction(model))),
+              child: Icon(Icons.add),
+              backgroundColor: Colors.red,
+              tooltip: "Ajoutez une transaction",
+            ),
+          );
+        }),
       ),
     );
   }

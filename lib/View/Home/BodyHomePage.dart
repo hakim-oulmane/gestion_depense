@@ -2,6 +2,8 @@ import 'package:expenditure_management/Model/Mouvement.dart';
 import 'package:expenditure_management/Model/RecordModel.dart';
 import 'package:expenditure_management/Tools/Methods.dart';
 import 'package:expenditure_management/Tools/Property.dart';
+import 'package:expenditure_management/View/MyTransaction/MyTransaction.dart';
+import 'package:expenditure_management/View/Transaction/AddTransaction.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -198,7 +200,8 @@ class _BodyHomePageState extends State<BodyHomePage> {
         children: <Widget>[
 
           RaisedButton(
-            onPressed: () => debugPrint("dépense"),
+            onPressed: () => Navigator.push(
+                context, MaterialPageRoute(builder: (context) => AddTransaction(widget.recordModel, 0))),
             color: Colors.red,
             child: Text(
                 "Dépense",
@@ -208,7 +211,8 @@ class _BodyHomePageState extends State<BodyHomePage> {
           ),
 
           RaisedButton(
-            onPressed: () => debugPrint("Revenu"),
+            onPressed: () => Navigator.push(
+                context, MaterialPageRoute(builder: (context) => AddTransaction(widget.recordModel, 1))),
             color: Colors.green,
             child: Text(
                 "Revenu",
@@ -223,16 +227,20 @@ class _BodyHomePageState extends State<BodyHomePage> {
   }
 
   Widget lastRecords(RecordModel model){
-    return Card(
-      child: Column(
-        children: <Widget>[
-          SizedBox(height: 10,),
-          Text("Dix derniers enregistrements", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: buildRecord(model),
-          ),
-        ],
+    return GestureDetector(
+      onTap: () => Navigator.push(context,
+          MaterialPageRoute(builder: (context) => MyTransaction())),
+      child: Card(
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 10,),
+            Text("Dix derniers enregistrements", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: buildRecord(model),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -241,7 +249,7 @@ class _BodyHomePageState extends State<BodyHomePage> {
     var index;
     return Column(
       children:
-        model.records.reversed.toList().sublist(0, model.lengthRecord > 20 ? 20 : model.lengthRecord)
+        model.records.reversed.toList().sublist(0, model.lengthRecord > 10 ? 10 : model.lengthRecord)
           .map((Mouvement m){
 
         List<Map> CATEGORIES = List<Map>();
