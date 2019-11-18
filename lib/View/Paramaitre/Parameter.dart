@@ -1,6 +1,7 @@
 import 'package:expenditure_management/Control/MouvementImpl.dart';
 import 'package:expenditure_management/Model/RecordModel.dart';
 import 'package:expenditure_management/Tools/Property.dart';
+import 'package:expenditure_management/View/Home/MyHomepage.dart';
 import 'package:expenditure_management/components/AppBar.dart';
 import 'package:expenditure_management/components/Drawer.dart';
 import 'package:flutter/material.dart';
@@ -27,23 +28,27 @@ class _ParameterState extends State<Parameter> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return SafeArea(
-      child: Scaffold(
-        key: scaffoldKey,
-        appBar: AppBarPage.getAppBar("Paramaitre"),
-        drawer: DrawerPage(),
-        body: Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: ListView(
-              shrinkWrap: true,
-              primary: true,
-              children: <Widget>[
-                RaisedButton(
-                  onPressed: show_confirmation,
-                  child: Text("Réinitialiser la base de donnée", style: TEXT_STYLE_BUTTON,),
-                )
-              ],
+    return WillPopScope(
+      onWillPop: () => Navigator.push(context,
+          MaterialPageRoute(builder: (context) => MyHomePage())),
+      child: SafeArea(
+        child: Scaffold(
+          key: scaffoldKey,
+          appBar: AppBarPage.getAppBar("Paramaitre"),
+          drawer: DrawerPage(),
+          body: Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: ListView(
+                shrinkWrap: true,
+                primary: true,
+                children: <Widget>[
+                  RaisedButton(
+                    onPressed: show_confirmation,
+                    child: Text("Réinitialiser la base de donnée", style: TEXT_STYLE_BUTTON,),
+                  )
+                ],
+              ),
             ),
           ),
         ),

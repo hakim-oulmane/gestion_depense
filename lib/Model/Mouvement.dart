@@ -11,4 +11,5 @@ class Mouvement {
 
   Mouvement(this.id, this.categorie, this.amount, this.description,
       this.datetime, this.deleted);
+  
 }

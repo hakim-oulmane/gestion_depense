@@ -3,6 +3,7 @@ import 'package:expenditure_management/Model/Mouvement.dart';
 import 'package:expenditure_management/Model/RecordModel.dart';
 import 'package:expenditure_management/Tools/Methods.dart';
 import 'package:expenditure_management/Tools/Property.dart';
+import 'package:expenditure_management/View/Transaction/EditTransaction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -75,7 +76,8 @@ class _ListTransactionState extends State<ListTransaction>{
           closeOnCanceled: true,
           onWillDismiss: (actionType) async {
             if(actionType == SlideActionType.primary) {
-              //modifier
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => EditTransaction(records[index])));
               return false;
             }
             else
@@ -87,7 +89,8 @@ class _ListTransactionState extends State<ListTransaction>{
             caption: 'Modifier',
             color: Colors.blue,
             icon: Icons.edit,
-            onTap: () => debugPrint("Modifier"),
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => EditTransaction(records[index]))),
           ),
         ],
         secondaryActions: <Widget>[
@@ -99,7 +102,6 @@ class _ListTransactionState extends State<ListTransaction>{
           ),
         ],
         child: ListTile(
-          onTap: () => debugPrint("list tile"),
           leading: CircleAvatar(
               backgroundColor: records[index].amount < 0 ? Colors.red : Colors.green,
               child: Icon( icon, color: Colors.white, size: 30,)
