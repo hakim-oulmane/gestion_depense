@@ -1,5 +1,5 @@
 import 'package:expenditure_management/Model/Mouvement.dart';
-import 'package:expenditure_management/components/AppBar.dart';
+import 'package:expenditure_management/components/AppBarPage.dart';
 import 'package:expenditure_management/components/Drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +9,8 @@ import 'EditRevenu.dart';
 class EditTransaction extends StatefulWidget{
 
   Mouvement record;
-  EditTransaction(this.record);
+  DateTime periode;
+  EditTransaction(this.record, this.periode);
 
   @override
   State<StatefulWidget> createState() => _EditTransactionState();
@@ -23,7 +24,7 @@ class _EditTransactionState extends State<EditTransaction>{
     return SafeArea(
       child: Scaffold(
         appBar: AppBarPage.getAppBar("Modifier transaction"),
-        drawer: DrawerPage(),
+        drawer: DrawerPage(widget.periode),
         body: widget.record.amount > 0 ? EditRevenu(widget.record) : EditDepense(widget.record),
       ),
     );;

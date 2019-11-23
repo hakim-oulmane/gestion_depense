@@ -2,11 +2,14 @@ import 'package:expenditure_management/Control/MouvementImpl.dart';
 import 'package:expenditure_management/Model/RecordModel.dart';
 import 'package:expenditure_management/Tools/Property.dart';
 import 'package:expenditure_management/View/Home/MyHomepage.dart';
-import 'package:expenditure_management/components/AppBar.dart';
+import 'package:expenditure_management/components/AppBarPage.dart';
 import 'package:expenditure_management/components/Drawer.dart';
 import 'package:flutter/material.dart';
 
 class Parameter extends StatefulWidget {
+
+  DateTime periode;
+  Parameter(this.periode);
 
   @override
   State<StatefulWidget> createState() => _ParameterState();
@@ -30,12 +33,12 @@ class _ParameterState extends State<Parameter> {
     // TODO: implement build
     return WillPopScope(
       onWillPop: () => Navigator.push(context,
-          MaterialPageRoute(builder: (context) => MyHomePage())),
+          MaterialPageRoute(builder: (context) => MyHomePage(periode: widget.periode,))),
       child: SafeArea(
         child: Scaffold(
           key: scaffoldKey,
           appBar: AppBarPage.getAppBar("Paramaitre"),
-          drawer: DrawerPage(),
+          drawer: DrawerPage(widget.periode),
           body: Center(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),

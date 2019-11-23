@@ -4,14 +4,20 @@ import 'package:expenditure_management/Model/RecordModel.dart';
 import 'package:expenditure_management/Tools/Methods.dart';
 import 'package:expenditure_management/Tools/Property.dart';
 import 'package:expenditure_management/View/Transaction/EditTransaction.dart';
+import 'package:expenditure_management/components/SelectPeriode.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:pattern_formatter/date_formatter.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ListTransaction extends StatefulWidget{
 
   RecordModel recordModel;
-  ListTransaction(this.recordModel);
+  DateTime periode;
+  DateTime _dateDebut;
+  DateTime _dateFin;
+  ListTransaction(this.recordModel, this.periode, this._dateDebut, this._dateFin);
 
   @override
   State<StatefulWidget> createState() => _ListTransactionState();
@@ -22,7 +28,9 @@ class _ListTransactionState extends State<ListTransaction>{
   Mouvement _deletedMouvement;
 
   @override
-  void initState() => super.initState();
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +70,11 @@ class _ListTransactionState extends State<ListTransaction>{
     var position;
     List<Widget> mouvements = List();
 
-    for(var index=0; index < records.length; index++){
+    for( var index=0; index < records.length; index++ ){
+
+      if(widget._dateDebut.isAfter(records[index].datetime) ||
+          widget._dateFin.isBefore(records[index].datetime)) continue;
+
       position = CATEGORIES.indexWhere((item) => item["name"] == records[index].categorie);
       IconData icon = CATEGORIES[position]["icon"];
 
@@ -77,7 +89,7 @@ class _ListTransactionState extends State<ListTransaction>{
           onWillDismiss: (actionType) async {
             if(actionType == SlideActionType.primary) {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => EditTransaction(records[index])));
+                  MaterialPageRoute(builder: (context) => EditTransaction(records[index], widget.periode)));
               return false;
             }
             else
@@ -90,7 +102,7 @@ class _ListTransactionState extends State<ListTransaction>{
             color: Colors.blue,
             icon: Icons.edit,
             onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => EditTransaction(records[index]))),
+                MaterialPageRoute(builder: (context) => EditTransaction(records[index], widget.periode))),
           ),
         ],
         secondaryActions: <Widget>[
@@ -126,7 +138,7 @@ class _ListTransactionState extends State<ListTransaction>{
         ),
       );
 
-      mouvements.add(slidable);
+      mouvements.insert(0, slidable);
     }
 
     mouvements.add(SizedBox(height: 40,));

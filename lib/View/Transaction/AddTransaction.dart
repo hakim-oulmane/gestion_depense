@@ -1,6 +1,6 @@
 import 'package:expenditure_management/Model/RecordModel.dart';
 import 'package:expenditure_management/Tools/Property.dart';
-import 'package:expenditure_management/components/AppBar.dart';
+import 'package:expenditure_management/components/AppBarPage.dart';
 import 'package:expenditure_management/components/Drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -8,9 +8,11 @@ import 'AddDepense.dart';
 import 'AddRevenu.dart';
 
 class AddTransaction extends StatefulWidget {
+
   RecordModel recordModel;
+  DateTime periode;
   final int index;
-  AddTransaction(this.recordModel, [this.index]);
+  AddTransaction(this.recordModel, this.periode, [this.index]);
 
   @override
   State<StatefulWidget> createState() => _AddTransactionState();
@@ -28,7 +30,7 @@ class _AddTransactionState extends State<AddTransaction> {
         initialIndex: widget.index ?? 0,
         child: Scaffold(
           appBar: AppBarPage.getAppBar("Nouvelle transaction"),
-          drawer: DrawerPage(),
+          drawer: DrawerPage(widget.periode),
           resizeToAvoidBottomInset: true,
           bottomNavigationBar: TabBar(
             indicatorSize: TabBarIndicatorSize.tab,

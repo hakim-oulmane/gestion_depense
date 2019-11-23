@@ -1,11 +1,12 @@
-
-import 'package:expenditure_management/Model/RecordModel.dart';
 import 'package:expenditure_management/View/Home/MyHomepage.dart';
 import 'package:expenditure_management/View/MyTransaction/MyTransaction.dart';
 import 'package:expenditure_management/View/Paramaitre/Parameter.dart';
 import 'package:flutter/material.dart';
 
 class DrawerPage extends StatefulWidget {
+
+  DateTime periode;
+  DrawerPage(this.periode);
 
   @override
   _DrawerState createState() => _DrawerState();
@@ -49,13 +50,13 @@ class _DrawerState extends  State<DrawerPage>{
               title: Text("Accueil"),
               leading: Icon(Icons.home, color: Colors.black54,),
               onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MyHomePage())),
+                  MaterialPageRoute(builder: (context) => MyHomePage(periode: widget.periode,))),
             ),
             ListTile(
               title: Text("Mes transactions"),
               leading: Icon(Icons.local_atm, color: Colors.black54,),
               onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MyTransaction())),
+                  MaterialPageRoute(builder: (context) => MyTransaction(widget.periode))),
             ),
             ListTile(
               title: Text("Statistiques"),
@@ -66,7 +67,7 @@ class _DrawerState extends  State<DrawerPage>{
               title: Text("Paramètre"),
               leading: Icon(Icons.settings, color: Colors.brown,),
               onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Parameter())),
+                  MaterialPageRoute(builder: (context) => Parameter(widget.periode))),
             ),
             ListTile(
               title: Text("À propos",),

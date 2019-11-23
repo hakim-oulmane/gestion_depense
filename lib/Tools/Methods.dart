@@ -29,4 +29,24 @@ class Methods {
     return montant.replaceAllMapped(
         new RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
   }
+
+  static DateTime getBeginTrimestre(DateTime date){
+    if(date.month < 3)
+      return DateTime(date.year, 1, 1, 0, 0, 0);
+    else
+      if(date.month < 6)
+        return DateTime(date.year, 3, 1, 0, 0, 0);
+      else
+        if(date.month < 9)
+          return DateTime(date.year, 6, 1, 0, 0, 0);
+        else
+          return DateTime(date.year, 9, 1, 0, 0, 0);
+  }
+
+  static DateTime getBeginSemestre(DateTime date){
+    if(date.month < 6)
+      return DateTime(date.year, 1, 1, 0, 0, 0);
+    else
+      return DateTime(date.year, 6, 1, 0, 0, 0);
+  }
 }

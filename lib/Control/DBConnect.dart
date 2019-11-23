@@ -51,4 +51,9 @@ class DBConnect {
     Database db = await openDatabase(path);
     return db;
   }
+
+  Future<void> closeDB() async{
+    print("closing database");
+    _database.close();
+  }
 }

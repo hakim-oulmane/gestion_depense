@@ -190,8 +190,7 @@ class _EditRevenuState extends State<EditRevenu> {
           },
           controller: _dateControl,
           onTap: _showDateTimePicker,
-          enabled: false,
-          enableInteractiveSelection: false,
+          readOnly: true,
           style: TEXT_STYLE,
           inputFormatters: [
             DateInputFormatter(),
