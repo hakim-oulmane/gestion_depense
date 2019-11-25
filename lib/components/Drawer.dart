@@ -4,7 +4,6 @@ import 'package:expenditure_management/View/Paramaitre/Parameter.dart';
 import 'package:flutter/material.dart';
 
 class DrawerPage extends StatefulWidget {
-
   DateTime periode;
   DrawerPage(this.periode);
 
@@ -12,8 +11,7 @@ class DrawerPage extends StatefulWidget {
   _DrawerState createState() => _DrawerState();
 }
 
-class _DrawerState extends  State<DrawerPage>{
-
+class _DrawerState extends State<DrawerPage> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -21,64 +19,68 @@ class _DrawerState extends  State<DrawerPage>{
       child: Drawer(
         child: ListView(
           children: <Widget>[
-
-            Container(
+            Image(
+              height: 230,
               width: double.infinity,
-              height: 130,
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text("Gestion", style: TextStyle(color: Colors.white, fontSize: 20),),
-                  Text("dépenses & revenus", style: TextStyle(color: Colors.white, fontSize: 20),)
-                ],
-              ),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  stops: [0.20, 0.75],
-                  colors: <Color>[
-                    Colors.green,
-                    Colors.red,
-                  ],
-                ),
-              ),
+              fit: BoxFit.cover,
+              image: AssetImage("assets/logo.png"),
             ),
-
             ListTile(
               title: Text("Accueil"),
-              leading: Icon(Icons.home, color: Colors.black54,),
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MyHomePage(periode: widget.periode,))),
+              leading: Icon(
+                Icons.home,
+                color: Colors.black54,
+              ),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MyHomePage(
+                            periode: widget.periode,
+                          ))),
             ),
             ListTile(
               title: Text("Mes transactions"),
-              leading: Icon(Icons.local_atm, color: Colors.black54,),
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MyTransaction(widget.periode))),
+              leading: Icon(
+                Icons.local_atm,
+                color: Colors.black54,
+              ),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MyTransaction(widget.periode))),
             ),
             ListTile(
               title: Text("Statistiques"),
-              leading: Icon(Icons.insert_chart, color: Colors.brown,),
+              leading: Icon(
+                Icons.insert_chart,
+                color: Colors.brown,
+              ),
               onTap: () => debugPrint("Statistiques"),
             ),
             ListTile(
               title: Text("Paramètre"),
-              leading: Icon(Icons.settings, color: Colors.brown,),
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Parameter(widget.periode))),
+              leading: Icon(
+                Icons.settings,
+                color: Colors.brown,
+              ),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Parameter(widget.periode))),
             ),
             ListTile(
-              title: Text("À propos",),
-              leading: Icon(Icons.info, color: Colors.brown,),
+              title: Text(
+                "À propos",
+              ),
+              leading: Icon(
+                Icons.info,
+                color: Colors.brown,
+              ),
               onTap: () => debugPrint("propos"),
             ),
-
           ],
         ),
       ),
     );
   }
-  
 }
