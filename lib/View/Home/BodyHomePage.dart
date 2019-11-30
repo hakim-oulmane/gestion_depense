@@ -1,7 +1,8 @@
 import 'package:expenditure_management/Model/RecordModel.dart';
-import 'package:expenditure_management/Tools/Property.dart';
+import 'package:expenditure_management/Service/Property.dart';
 import 'package:expenditure_management/View/Transaction/AddTransaction.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'Actuality.dart';
@@ -36,6 +37,9 @@ class _BodyHomePageState extends State<BodyHomePage> {
             return buildLoading;
           } else {
             if (model.records != null) {
+              Future.delayed(Duration(seconds: 3), (){
+                //wait 2 seconds
+              });
               return ListView(
                 shrinkWrap: true,
                 primary: true,
@@ -94,11 +98,9 @@ class _BodyHomePageState extends State<BodyHomePage> {
   }
 
   get buildLoading{
-    return Container(
-        child: Center(
-          child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(FIRST_COLOR)),
-        )
+    return SpinKitRotatingCircle(
+      color: Colors.green,
+      size: 50.0,
     );
   }
 }

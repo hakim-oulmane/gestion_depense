@@ -1,14 +1,13 @@
+import 'package:expenditure_management/Control/CategorieImpl.dart';
 import 'package:expenditure_management/Control/MouvementImpl.dart';
+import 'package:expenditure_management/Model/Categorie.dart';
 import 'package:expenditure_management/Model/Mouvement.dart';
 import 'package:expenditure_management/Model/RecordModel.dart';
-import 'package:expenditure_management/Tools/Methods.dart';
-import 'package:expenditure_management/Tools/Property.dart';
+import 'package:expenditure_management/Service/Methods.dart';
+import 'package:expenditure_management/Service/Property.dart';
 import 'package:expenditure_management/View/Transaction/EditTransaction.dart';
-import 'package:expenditure_management/components/SelectPeriode.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:pattern_formatter/date_formatter.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ListTransaction extends StatefulWidget{
@@ -17,7 +16,11 @@ class ListTransaction extends StatefulWidget{
   DateTime periode;
   DateTime _dateDebut;
   DateTime _dateFin;
-  ListTransaction(this.recordModel, this.periode, this._dateDebut, this._dateFin);
+  bool isDepenseCheck;
+  bool isRevenuCheck;
+
+  ListTransaction(this.recordModel, this.periode, this._dateDebut, this._dateFin,
+      this.isDepenseCheck, this.isRevenuCheck);
 
   @override
   State<StatefulWidget> createState() => _ListTransactionState();
@@ -26,11 +29,6 @@ class ListTransaction extends StatefulWidget{
 class _ListTransactionState extends State<ListTransaction>{
 
   Mouvement _deletedMouvement;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,19 +62,20 @@ class _ListTransactionState extends State<ListTransaction>{
 
   List<Widget> buildMouvements(List<Mouvement> records) {
 
-    List<Map> CATEGORIES = List<Map>();
-    CATEGORIES.addAll(CATEGORIE_DEPENSE);
-    CATEGORIES.addAll(CATEGORIE_REVENU);
+    List<Categorie> _categories = CategorieImpl().getCategories();
     var position;
     List<Widget> mouvements = List();
 
     for( var index=0; index < records.length; index++ ){
 
       if(widget._dateDebut.isAfter(records[index].datetime) ||
-          widget._dateFin.isBefore(records[index].datetime)) continue;
+          widget._dateFin.isBefore(records[index].datetime) ||
+          (widget.isDepenseCheck == false && records[index].amount < 0) ||
+          (widget.isRevenuCheck == false && records[index].amount > 0)
+      ) continue;
 
-      position = CATEGORIES.indexWhere((item) => item["name"] == records[index].categorie);
-      IconData icon = CATEGORIES[position]["icon"];
+      position = _categories.indexWhere((item) => item.name == records[index].categorie);
+      IconData icon = _categories[position].icon;
 
       Slidable slidable = Slidable(
         closeOnScroll: true,

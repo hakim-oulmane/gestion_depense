@@ -1,7 +1,9 @@
+import 'package:expenditure_management/Control/CategorieImpl.dart';
+import 'package:expenditure_management/Model/Categorie.dart';
 import 'package:expenditure_management/Model/Mouvement.dart';
 import 'package:expenditure_management/Model/RecordModel.dart';
-import 'package:expenditure_management/Tools/Methods.dart';
-import 'package:expenditure_management/Tools/Property.dart';
+import 'package:expenditure_management/Service/Methods.dart';
+import 'package:expenditure_management/Service/Property.dart';
 import 'package:expenditure_management/View/MyTransaction/MyTransaction.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +18,13 @@ class LastRecords extends StatefulWidget {
 }
 
 class _LastRecordsState extends State<LastRecords> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -45,17 +54,16 @@ class _LastRecordsState extends State<LastRecords> {
 
   buildRecord(RecordModel model) {
     var index;
+    List<Categorie> _categories = CategorieImpl().getCategories();
+
     return Column(
         children: model.records.reversed
             .toList()
             .sublist(0, model.lengthRecord > 10 ? 10 : model.lengthRecord)
             .map((Mouvement m) {
-      List<Map> CATEGORIES = List<Map>();
-      CATEGORIES.addAll(CATEGORIE_DEPENSE);
-      CATEGORIES.addAll(CATEGORIE_REVENU);
 
-      index = CATEGORIES.indexWhere((item) => item["name"] == m.categorie);
-      IconData icon = CATEGORIES[index]["icon"];
+      index = _categories.indexWhere((item) => item.name == m.categorie);
+      IconData icon = _categories[index].icon;
 
       return Row(
         children: <Widget>[

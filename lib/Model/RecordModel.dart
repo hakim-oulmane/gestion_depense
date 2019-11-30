@@ -1,3 +1,4 @@
+import 'package:expenditure_management/Control/CategorieImpl.dart';
 import 'package:expenditure_management/Control/MouvementImpl.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -17,6 +18,9 @@ class RecordModel extends Model {
   void loadListRecord() {
     _isLoading = true;
     notifyListeners();
+    //init categories
+    CategorieImpl().getCategories();
+    //init mouvements
     MouvementImpl().getAllMouvement().then((data) {
       _listRecord = data;
       _isLoading = false;

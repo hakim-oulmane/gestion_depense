@@ -4,7 +4,7 @@ import 'package:expenditure_management/View/Transaction/AddTransaction.dart';
 import 'package:expenditure_management/components/SelectPeriode.dart';
 import 'package:expenditure_management/components/Drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:expenditure_management/Tools/Property.dart';
+import 'package:expenditure_management/Service/Property.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:scoped_model/scoped_model.dart';

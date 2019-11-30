@@ -1,4 +1,4 @@
-import 'package:expenditure_management/Tools/Property.dart';
+import 'package:expenditure_management/Service/Property.dart';
 import 'package:flutter/material.dart';
 
 class SelectPeriode extends StatelessWidget {
@@ -13,7 +13,7 @@ class SelectPeriode extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return PopupMenuButton(
-      icon: Icon(icon),
+      icon: Icon(icon, color: Colors.white,),
       onSelected: (value) => onChangePeriode(PERIODE_LIST[value]),
       itemBuilder: (context) {
         return PERIODE_LIST.keys.map<PopupMenuItem<String>>((String value){

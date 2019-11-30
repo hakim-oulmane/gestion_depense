@@ -1,8 +1,10 @@
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:expenditure_management/Control/CategorieImpl.dart';
+import 'package:expenditure_management/Model/Categorie.dart';
 import 'package:expenditure_management/Model/Mouvement.dart';
 import 'package:expenditure_management/Model/RecordModel.dart';
-import 'package:expenditure_management/Tools/Methods.dart';
-import 'package:expenditure_management/Tools/Property.dart';
+import 'package:expenditure_management/Service/Methods.dart';
+import 'package:expenditure_management/Service/Property.dart';
 import 'package:flutter/material.dart';
 
 class PieCharts extends StatefulWidget {
@@ -20,10 +22,17 @@ class _PieChartsState extends State<PieCharts> {
 
   final bool animate = true;
   bool isNull = false;
+  List<Categorie> _categories;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _categories = CategorieImpl().getCategories();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-
     List<charts.Series> seriesList = getSeries(widget.model);
 
     return Stack(
@@ -49,7 +58,7 @@ class _PieChartsState extends State<PieCharts> {
                     // the chart, [horizontalFirst] is set to false. This means that the
                     // legend entries will grow as new rows first instead of a new column.
                     horizontalFirst: true,
-                    desiredMaxColumns: 3,
+                    desiredMaxColumns: getWidth(context) >= 600 ? 6 : 3,
                     // This defines the padding around each legend entry.
                     cellPadding: new EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
                     // Set [showMeasures] to true to display measures in series legend.
@@ -120,12 +129,12 @@ class _PieChartsState extends State<PieCharts> {
 
     if( mouvements.length == 0 ) {
       data = [
-        StateMouvement(CATEGORIE_DEPENSE[0]["name"], 25, COLOR_STATS[0]),
-        StateMouvement(CATEGORIE_DEPENSE[1]["name"], 25, COLOR_STATS[1]),
-        StateMouvement(CATEGORIE_DEPENSE[2]["name"], 25, COLOR_STATS[2]),
-        StateMouvement(CATEGORIE_DEPENSE[3]["name"], 25, COLOR_STATS[3]),
-        StateMouvement(CATEGORIE_DEPENSE[4]["name"], 25, COLOR_STATS[4]),
-        StateMouvement(CATEGORIE_DEPENSE[5]["name"], 25, COLOR_STATS[5]),
+        StateMouvement(_categories[0].name, 25, COLOR_STATS[0]),
+        StateMouvement(_categories[1].name, 25, COLOR_STATS[1]),
+        StateMouvement(_categories[2].name, 25, COLOR_STATS[2]),
+        StateMouvement(_categories[3].name, 25, COLOR_STATS[3]),
+        StateMouvement(_categories[4].name, 25, COLOR_STATS[4]),
+        StateMouvement(_categories[5].name, 25, COLOR_STATS[5]),
       ];
       setState(() => isNull = true);
     }

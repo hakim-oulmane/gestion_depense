@@ -1,10 +1,13 @@
+import 'package:expenditure_management/Model/RecordModel.dart';
 import 'package:expenditure_management/View/Home/MyHomepage.dart';
 import 'package:expenditure_management/View/MyTransaction/MyTransaction.dart';
 import 'package:expenditure_management/View/Paramaitre/Parameter.dart';
+import 'package:expenditure_management/View/Statistique/MyStatistics.dart';
 import 'package:flutter/material.dart';
 
 class DrawerPage extends StatefulWidget {
   DateTime periode;
+
   DrawerPage(this.periode);
 
   @override
@@ -44,29 +47,41 @@ class _DrawerState extends State<DrawerPage> {
                 Icons.local_atm,
                 color: Colors.black54,
               ),
-              onTap: () => Navigator.push(
+              onTap: (){
+                Navigator.of(context).pop(false);
+                Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => MyTransaction(widget.periode))),
+                      builder: (context) => MyTransaction(widget.periode)));
+              },
             ),
             ListTile(
               title: Text("Statistiques"),
               leading: Icon(
                 Icons.insert_chart,
-                color: Colors.brown,
+                color: Colors.black54,
               ),
-              onTap: () => debugPrint("Statistiques"),
+              onTap: (){
+                Navigator.of(context).pop(false);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MyStatics(widget.periode)));
+              },
             ),
             ListTile(
               title: Text("Paramètre"),
               leading: Icon(
                 Icons.settings,
-                color: Colors.brown,
+                color: Colors.black54,
               ),
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Parameter(widget.periode))),
+              onTap: (){
+                Navigator.of(context).pop(false);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Parameter(widget.periode)));
+              }
             ),
             ListTile(
               title: Text(
@@ -74,7 +89,7 @@ class _DrawerState extends State<DrawerPage> {
               ),
               leading: Icon(
                 Icons.info,
-                color: Colors.brown,
+                color: Colors.black54,
               ),
               onTap: () => debugPrint("propos"),
             ),

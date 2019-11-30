@@ -29,7 +29,7 @@ class DBConnect {
 
     if (!exists) {
       // Should happen only the first time you launch your application
-      print("Creating new copy from ass et");
+      print("Creating new copy from db_depense.db");
 
       // Make sure the parent directory exists
       try {

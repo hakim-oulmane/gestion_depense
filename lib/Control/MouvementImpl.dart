@@ -1,5 +1,5 @@
 import 'package:expenditure_management/Model/Mouvement.dart';
-import 'package:expenditure_management/Tools/Methods.dart';
+import 'package:expenditure_management/Service/Methods.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 import 'DBConnect.dart';
@@ -15,7 +15,7 @@ class MouvementImpl implements MouvementRepository {
         'description, datetime, deleted FROM mouvement m, categorie c WHERE m.categorie = c.name '
         'AND deleted = 0 ORDER BY year, month, day, hour, minute');
 
-    List<Mouvement> depenses = List();
+    List<Mouvement> mouvements = List();
 
     for(Map item in list){
       Mouvement object = Mouvement(
@@ -26,9 +26,9 @@ class MouvementImpl implements MouvementRepository {
           Methods.getDateTimeFromString(item["datetime"]),
           item["deleted"] == 0 ? false : true
       );
-      depenses.add(object);
+      mouvements.add(object);
     }
-    return depenses;
+    return mouvements;
   }
 
   @override

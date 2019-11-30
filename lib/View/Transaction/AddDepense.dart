@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:expenditure_management/Control/CategorieImpl.dart';
 import 'package:expenditure_management/Control/MouvementImpl.dart';
+import 'package:expenditure_management/Model/Categorie.dart';
 import 'package:expenditure_management/Model/RecordModel.dart';
-import 'package:expenditure_management/Tools/Methods.dart';
-import 'package:expenditure_management/Tools/Property.dart';
+import 'package:expenditure_management/Service/Methods.dart';
+import 'package:expenditure_management/Service/Property.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 import 'package:pattern_formatter/pattern_formatter.dart';
@@ -26,6 +28,7 @@ class _AddDepenseState extends State<AddDepense> {
   String _format = 'dd/MM/yyyy HH:mm';
   DateTime _dateTime;
   String _categorieValue;
+  List<Categorie> _categories;
 
   var _formKey = GlobalKey<FormState>();
   TextEditingController _montantControl = TextEditingController();
@@ -34,7 +37,9 @@ class _AddDepenseState extends State<AddDepense> {
 
   @override
   void initState() {
-    _categorieValue = CATEGORIE_DEPENSE[0]["name"];
+    _categories = List.from(CategorieImpl().getCategories());
+    _categories.retainWhere((item) => item.sign == false);
+    _categorieValue = _categories[0].name;
     _dateControl.text = Methods.getStringFromDateTime(DateTime.now());
     _dateTime = DateTime.now();
     super.initState();
@@ -123,25 +128,25 @@ class _AddDepenseState extends State<AddDepense> {
               underline: Container(),
               isDense: false,
               elevation: 8,
-              value: _categorieValue ?? CATEGORIE_DEPENSE[0],
+              value: _categorieValue ?? _categories[0].name,
               onChanged: (String newValue) {
                 setState(() => _categorieValue = newValue);
               },
-              items: CATEGORIE_DEPENSE.map<DropdownMenuItem<String>>((Map map) {
+              items: _categories.map<DropdownMenuItem<String>>((Categorie cat) {
                 return DropdownMenuItem<String>(
-                  value: map["name"],
+                  value: cat.name,
                   child: Row(
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
                         child: CircleAvatar(
-                          child: Icon(map["icon"], color: Colors.white,),
+                          child: Icon(cat.icon, color: Colors.white,),
                           backgroundColor: SECOND_COLOR,
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 15),
-                        child: Text(map["name"], style: TextStyle(fontSize: 16),),
+                        child: Text(cat.name, style: TextStyle(fontSize: 16),),
                       )
                     ],
                   ),

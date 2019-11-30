@@ -1,7 +1,9 @@
+import 'package:expenditure_management/Control/CategorieImpl.dart';
 import 'package:expenditure_management/Control/MouvementImpl.dart';
+import 'package:expenditure_management/Model/Categorie.dart';
 import 'package:expenditure_management/Model/Mouvement.dart';
-import 'package:expenditure_management/Tools/Methods.dart';
-import 'package:expenditure_management/Tools/Property.dart';
+import 'package:expenditure_management/Service/Methods.dart';
+import 'package:expenditure_management/Service/Property.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 import 'package:pattern_formatter/date_formatter.dart';
@@ -27,6 +29,7 @@ class _EditRevenuState extends State<EditRevenu> {
   String _format = 'dd/MM/yyyy HH:mm';
   DateTime _dateTime;
   String _categorieValue;
+  List<Categorie> _categories;
 
   var _formKey = GlobalKey<FormState>();
   TextEditingController _montantControl = TextEditingController();
@@ -35,6 +38,8 @@ class _EditRevenuState extends State<EditRevenu> {
 
   @override
   void initState() {
+    _categories = List.from(CategorieImpl().getCategories());
+    _categories.retainWhere((item) => item.sign == true);
     _categorieValue = record.categorie;
     _dateControl.text = Methods.getStringFromDateTime(record.datetime);
     _dateTime = record.datetime;
@@ -134,13 +139,13 @@ class _EditRevenuState extends State<EditRevenu> {
               underline: Container(),
               isDense: false,
               elevation: 8,
-              value: _categorieValue ?? CATEGORIE_REVENU[0]["name"],
+              value: _categorieValue ?? _categories[0].name,
               onChanged: (String newValue) {
                 setState(() => _categorieValue = newValue);
               },
-              items: CATEGORIE_REVENU.map<DropdownMenuItem<String>>((Map map) {
+              items: _categories.map<DropdownMenuItem<String>>((Categorie cat) {
                 return DropdownMenuItem<String>(
-                  value: map["name"],
+                  value: cat.name,
                   child: Row(
                     children: <Widget>[
                       Padding(
@@ -148,7 +153,7 @@ class _EditRevenuState extends State<EditRevenu> {
                             horizontal: 5, vertical: 3),
                         child: CircleAvatar(
                           child: Icon(
-                            map["icon"],
+                            cat.icon,
                             color: Colors.white,
                           ),
                           backgroundColor: SECOND_COLOR,
@@ -156,8 +161,7 @@ class _EditRevenuState extends State<EditRevenu> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 15),
-                        child: Text(
-                          map["name"],
+                        child: Text(cat.name,
                           style: TextStyle(fontSize: 16),
                         ),
                       )

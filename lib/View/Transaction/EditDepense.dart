@@ -1,7 +1,9 @@
+import 'package:expenditure_management/Control/CategorieImpl.dart';
 import 'package:expenditure_management/Control/MouvementImpl.dart';
+import 'package:expenditure_management/Model/Categorie.dart';
 import 'package:expenditure_management/Model/Mouvement.dart';
-import 'package:expenditure_management/Tools/Methods.dart';
-import 'package:expenditure_management/Tools/Property.dart';
+import 'package:expenditure_management/Service/Methods.dart';
+import 'package:expenditure_management/Service/Property.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 import 'package:pattern_formatter/date_formatter.dart';
@@ -27,6 +29,7 @@ class _EditDepenseState extends State<EditDepense>{
   String _format = 'dd/MM/yyyy HH:mm';
   DateTime _dateTime;
   String _categorieValue;
+  List<Categorie> _categories;
 
   var _formKey = GlobalKey<FormState>();
   TextEditingController _montantControl = TextEditingController();
@@ -36,6 +39,8 @@ class _EditDepenseState extends State<EditDepense>{
   @override
   void initState() {
     // TODO: implement initState
+    _categories = List.from(CategorieImpl().getCategories());
+    _categories.retainWhere((item) => item.sign == false);
     _montantControl.text = record.amount.abs().toString();
     _categorieValue = record.categorie;
     _dateControl.text = Methods.getStringFromDateTime(record.datetime);
@@ -106,6 +111,7 @@ class _EditDepenseState extends State<EditDepense>{
 
   ///get categories
   Widget get categorie {
+
     return Row(
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,25 +133,25 @@ class _EditDepenseState extends State<EditDepense>{
               underline: Container(),
               isDense: false,
               elevation: 8,
-              value: _categorieValue ?? CATEGORIE_DEPENSE[0],
+              value: _categorieValue ?? _categories[0].name,
               onChanged: (String newValue) {
                 setState(() => _categorieValue = newValue);
               },
-              items: CATEGORIE_DEPENSE.map<DropdownMenuItem<String>>((Map map) {
+              items: _categories.map<DropdownMenuItem<String>>((Categorie cat) {
                 return DropdownMenuItem<String>(
-                  value: map["name"],
+                  value: cat.name,
                   child: Row(
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
                         child: CircleAvatar(
-                          child: Icon(map["icon"], color: Colors.white,),
+                          child: Icon(cat.icon, color: Colors.white,),
                           backgroundColor: SECOND_COLOR,
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 15),
-                        child: Text(map["name"], style: TextStyle(fontSize: 16),),
+                        child: Text(cat.name, style: TextStyle(fontSize: 16),),
                       )
                     ],
                   ),
