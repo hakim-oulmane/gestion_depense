@@ -1,9 +1,7 @@
 import 'package:expenditure_management/Model/RecordModel.dart';
-import 'package:expenditure_management/Service/Property.dart';
 import 'package:expenditure_management/View/Transaction/AddTransaction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 import 'Actuality.dart';
 import 'LastRecords.dart';
@@ -32,31 +30,18 @@ class _BodyHomePageState extends State<BodyHomePage> {
     return Center(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
-        child: ScopedModelDescendant<RecordModel>(builder: (context, child, model) {
-          if (model.isLoading) {
-            return buildLoading;
-          } else {
-            if (model.records != null) {
-              Future.delayed(Duration(seconds: 3), (){
-                //wait 2 seconds
-              });
-              return ListView(
-                shrinkWrap: true,
-                primary: true,
-                children: <Widget>[
-                  SizedBox(height: 20,),
-                  Actuality(model, widget.periode),
-                  getButtons,
-                  PieCharts(model, widget.periode),
-                  LastRecords(model, widget.periode),
-                  SizedBox(height: 40,),
-                ],
-              );
-            } else {
-              return buildLoading;
-            }
-          }
-        }),
+        child: ListView(
+            shrinkWrap: true,
+            primary: true,
+            children: <Widget>[
+              SizedBox(height: 20,),
+              Actuality(widget.recordModel, widget.periode),
+              getButtons,
+              PieCharts(widget.recordModel, widget.periode),
+              LastRecords(widget.recordModel, widget.periode),
+              SizedBox(height: 40,),
+            ],
+          ),
       ),
     );
   }
@@ -97,10 +82,4 @@ class _BodyHomePageState extends State<BodyHomePage> {
     );
   }
 
-  get buildLoading{
-    return SpinKitRotatingCircle(
-      color: Colors.green,
-      size: 50.0,
-    );
-  }
 }

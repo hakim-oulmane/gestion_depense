@@ -33,21 +33,11 @@ class _ListTransactionState extends State<ListTransaction>{
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ScopedModelDescendant<RecordModel>(builder: (context, child, model) {
-        if (model.isLoading) {
-          return buildLoading;
-        } else {
-          if (model.records != null) {
-            return ListView(
-              shrinkWrap: true,
-              primary: true,
-              children: buildMouvements(model.records),
-            );
-          } else {
-            return buildLoading;
-          }
-        }
-      }),
+      child: ListView(
+          shrinkWrap: true,
+          primary: true,
+          children: buildMouvements(widget.recordModel.records),
+        )
     );
   }
 
@@ -88,7 +78,7 @@ class _ListTransactionState extends State<ListTransaction>{
           onWillDismiss: (actionType) async {
             if(actionType == SlideActionType.primary) {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => EditTransaction(records[index], widget.periode)));
+                  MaterialPageRoute(builder: (context) => EditTransaction(widget.recordModel, records[index], widget.periode)));
               return false;
             }
             else
@@ -101,7 +91,7 @@ class _ListTransactionState extends State<ListTransaction>{
             color: Colors.blue,
             icon: Icons.edit,
             onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => EditTransaction(records[index], widget.periode))),
+                MaterialPageRoute(builder: (context) => EditTransaction(widget.recordModel, records[index], widget.periode))),
           ),
         ],
         secondaryActions: <Widget>[

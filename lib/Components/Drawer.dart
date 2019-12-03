@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 
 class DrawerPage extends StatefulWidget {
   DateTime periode;
+  RecordModel model;
 
-  DrawerPage(this.periode);
+  DrawerPage(this.model, this.periode);
 
   @override
   _DrawerState createState() => _DrawerState();
@@ -52,7 +53,7 @@ class _DrawerState extends State<DrawerPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => MyTransaction(widget.periode)));
+                      builder: (context) => MyTransaction(widget.model, widget.periode)));
               },
             ),
             ListTile(
@@ -66,7 +67,7 @@ class _DrawerState extends State<DrawerPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => MyStatics(widget.periode)));
+                      builder: (context) => MyStatics(widget.model, widget.periode)));
               },
             ),
             ListTile(
@@ -80,7 +81,7 @@ class _DrawerState extends State<DrawerPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Parameter(widget.periode)));
+                        builder: (context) => Parameter(widget.model)));
               }
             ),
             ListTile(

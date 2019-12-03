@@ -30,7 +30,7 @@ class _AddTransactionState extends State<AddTransaction> {
         initialIndex: widget.index ?? 0,
         child: Scaffold(
           appBar: AppBarPage.getAppBar("Nouvelle transaction"),
-          drawer: DrawerPage(widget.periode),
+          drawer: DrawerPage(widget.recordModel, widget.periode),
           resizeToAvoidBottomInset: true,
           bottomNavigationBar: TabBar(
             indicatorSize: TabBarIndicatorSize.tab,

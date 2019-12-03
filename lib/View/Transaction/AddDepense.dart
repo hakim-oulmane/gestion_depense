@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:expenditure_management/Control/CategorieImpl.dart';
 import 'package:expenditure_management/Control/MouvementImpl.dart';
 import 'package:expenditure_management/Model/Categorie.dart';
+import 'package:expenditure_management/Model/Mouvement.dart';
 import 'package:expenditure_management/Model/RecordModel.dart';
 import 'package:expenditure_management/Service/Methods.dart';
 import 'package:expenditure_management/Service/Property.dart';
@@ -285,9 +286,12 @@ class _AddDepenseState extends State<AddDepense> {
     });
     future.then((id) {
       if(id != null && id > 0){
-        showToast("Dépense enregistrée");
+
         ///load the list of records
-        widget.recordModel.loadListRecord();
+        Mouvement newMouvement = Mouvement(id, data["categorie"], -data["montant"],
+            data["description"], data["datetime"], false);
+        widget.recordModel.records.add(newMouvement);
+        widget.recordModel.records.sort((a, b) => a.datetime.compareTo(b.datetime));
 
         ///reset content form
         setState(() {
@@ -295,6 +299,8 @@ class _AddDepenseState extends State<AddDepense> {
           _categorieValue = "Nourriture";
           _descriptionControl.clear();
         });
+
+        showToast("Dépense enregistrée");
       }
       else
         showToast("Echec de l'opération");

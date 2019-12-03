@@ -2,6 +2,7 @@ import 'package:expenditure_management/Control/CategorieImpl.dart';
 import 'package:expenditure_management/Control/MouvementImpl.dart';
 import 'package:expenditure_management/Model/Categorie.dart';
 import 'package:expenditure_management/Model/Mouvement.dart';
+import 'package:expenditure_management/Model/RecordModel.dart';
 import 'package:expenditure_management/Service/Methods.dart';
 import 'package:expenditure_management/Service/Property.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +12,9 @@ import 'package:pattern_formatter/numeric_formatter.dart';
 
 class EditRevenu extends StatefulWidget {
   Mouvement record;
+  RecordModel model;
 
-  EditRevenu(this.record);
+  EditRevenu(this.record, this.model);
 
   @override
   State<StatefulWidget> createState() => _EditRevenuState(record);
@@ -313,13 +315,16 @@ class _EditRevenuState extends State<EditRevenu> {
     future.then((id) {
       if (id != null && id > 0) {
 
-        showToast("Revenu modifié");
-
         ///set new values of object
         record.description = data["description"];
         record.categorie = data["categorie"];
         record.amount = data["montant"];
         record.datetime = data["datetime"];
+
+        widget.model.records.sort((a, b) => a.datetime.compareTo(b.datetime));
+
+        showToast("Revenu modifié");
+
 
         ///return to the precedent page
         Future.delayed(Duration(seconds: 2), (){

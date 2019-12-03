@@ -1,6 +1,7 @@
 import 'package:expenditure_management/Control/CategorieImpl.dart';
 import 'package:expenditure_management/Control/MouvementImpl.dart';
 import 'package:expenditure_management/Model/Categorie.dart';
+import 'package:expenditure_management/Model/Mouvement.dart';
 import 'package:expenditure_management/Model/RecordModel.dart';
 import 'package:expenditure_management/Service/Methods.dart';
 import 'package:expenditure_management/Service/Property.dart';
@@ -284,9 +285,12 @@ class _AddRevenuState extends State<AddRevenu> {
     });
     future.then((id) {
       if(id != null && id > 0){
-        showToast("Revenu enregistré");
+
         ///load the list of records
-        widget.recordModel.loadListRecord();
+        Mouvement newMouvement = Mouvement(id, data["categorie"], data["montant"],
+            data["description"], data["datetime"], false);
+        widget.recordModel.records.add(newMouvement);
+        widget.recordModel.records.sort((a, b) => a.datetime.compareTo(b.datetime));
 
         ///reset content form
         setState(() {
@@ -294,6 +298,8 @@ class _AddRevenuState extends State<AddRevenu> {
           _categorieValue = "Salaire";
           _descriptionControl.clear();
         });
+
+        showToast("Revenu enregistré");
       }
       else
         showToast("Echec de l'opération");

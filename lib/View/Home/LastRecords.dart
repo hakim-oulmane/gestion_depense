@@ -31,7 +31,7 @@ class _LastRecordsState extends State<LastRecords> {
     return widget.model.lengthRecord == 0 ?
     Container() : GestureDetector(
       onTap: () => Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MyTransaction(widget.periode))),
+          context, MaterialPageRoute(builder: (context) => MyTransaction(widget.model, widget.periode))),
       child: Card(
         child: Column(
           children: <Widget>[

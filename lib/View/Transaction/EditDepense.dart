@@ -2,6 +2,7 @@ import 'package:expenditure_management/Control/CategorieImpl.dart';
 import 'package:expenditure_management/Control/MouvementImpl.dart';
 import 'package:expenditure_management/Model/Categorie.dart';
 import 'package:expenditure_management/Model/Mouvement.dart';
+import 'package:expenditure_management/Model/RecordModel.dart';
 import 'package:expenditure_management/Service/Methods.dart';
 import 'package:expenditure_management/Service/Property.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,8 @@ import 'package:pattern_formatter/numeric_formatter.dart';
 class EditDepense extends StatefulWidget{
 
   Mouvement record;
-  EditDepense(this.record);
+  RecordModel model;
+  EditDepense(this.record, this.model);
 
   @override
   State<StatefulWidget> createState() => _EditDepenseState(record);
@@ -292,13 +294,15 @@ class _EditDepenseState extends State<EditDepense>{
     future.then((id) {
       if(id != null && id > 0){
 
-        showToast("Dépense modifiée");
-
         ///set new values of object
         record.description = data["description"];
         record.categorie = data["categorie"];
         record.amount = -data["montant"];
         record.datetime = data["datetime"];
+
+        widget.model.records.sort((a, b) => a.datetime.compareTo(b.datetime));
+
+        showToast("Dépense modifiée");
 
         ///return to the precedent page
         Future.delayed(Duration(seconds: 2), (){

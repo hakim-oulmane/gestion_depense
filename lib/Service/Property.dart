@@ -34,8 +34,8 @@ DateTime now = DateTime.now();
 
 final Map<String, DateTime> PERIODE_LIST = {
   "Par jour": DateTime(now.year, now.month, now.day, 0, 0, 0),
-  "Hebedomadaire": DateTime(now.year, now.month, now.day - now.weekday, 0, 0, 0),
-  "Bibedomadaire": DateTime(now.year, now.month, now.day - now.weekday, 0, 0, 0).subtract(Duration(days: 7)),
+  "Hebedomadaire": DateTime(now.year, now.month, now.day - (now.weekday % 7), 0, 0, 0),
+  "Bibedomadaire": DateTime(now.year, now.month, now.day - (now.weekday % 7), 0, 0, 0).subtract(Duration(days: 7)),
   "Mensuel": DateTime(now.year, now.month, 1, 0, 0, 0),
   "Trimestriel": Methods.getBeginTrimestre(now),
   "Semestriel": Methods.getBeginSemestre(now),

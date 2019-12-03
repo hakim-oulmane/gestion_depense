@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 
 class Parameter extends StatefulWidget {
 
-  DateTime periode;
-  Parameter(this.periode);
+  RecordModel model;
+  Parameter(this.model);
 
   @override
   State<StatefulWidget> createState() => _ParameterState();
@@ -18,13 +18,9 @@ class Parameter extends StatefulWidget {
 class _ParameterState extends State<Parameter> {
 
   var scaffoldKey = GlobalKey<ScaffoldState>();
-  RecordModel _recordModel;
 
   @override
   void initState() {
-    ///load the list of records
-    _recordModel = RecordModel();
-    _recordModel.loadListRecord();
     super.initState();
   }
 
@@ -106,8 +102,10 @@ class _ParameterState extends State<Parameter> {
       showToast("Echec de l'opération");
     });
     future.then((id) {
-      if(id != null && id >= 0)
+      if(id != null && id >= 0) {
+        widget.model.records.clear();
         showToast("Base de donnée réinitialisée");
+      }
       else
         showToast("Echec de l'opération");
     }, onError: (e) {

@@ -13,16 +13,17 @@ import 'package:scoped_model/scoped_model.dart';
 import 'ListTransaction.dart';
 
 class MyTransaction extends StatefulWidget {
+  RecordModel model;
   DateTime periode;
 
-  MyTransaction(this.periode);
+  MyTransaction(this.model, this.periode);
 
   @override
   State<StatefulWidget> createState() => _MyTransactionState();
 }
 
 class _MyTransactionState extends State<MyTransaction> {
-  RecordModel _recordModel;
+
   DateTime _dateDebut;
   DateTime _dateFin;
   bool isDepenseCheck;
@@ -31,8 +32,6 @@ class _MyTransactionState extends State<MyTransaction> {
   @override
   void initState() {
     ///load the list of records
-    _recordModel = RecordModel();
-    _recordModel.loadListRecord();
     _dateDebut = widget.periode;
     _dateFin = DateTime.now();
     isDepenseCheck = true;
@@ -44,31 +43,28 @@ class _MyTransactionState extends State<MyTransaction> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return SafeArea(
-      child: ScopedModel(
-        model: _recordModel,
-        child: BackdropScaffold(
-          title: Text('Mes transactions'),
-          headerHeight: 100,
-          iconPosition: BackdropIconPosition.action,
-          // Height of front layer when backlayer is shown.
+      child: BackdropScaffold(
+        title: Text('Mes transactions'),
+        headerHeight: 100,
+        iconPosition: BackdropIconPosition.action,
+        // Height of front layer when backlayer is shown.
 //            headerHeight: 60.0,
-          frontLayer: ListTransaction(
-              _recordModel, widget.periode, _dateDebut, _dateFin, isDepenseCheck, isRevenuCheck),
-          backLayer: FilterTransaction(
-            dateDebut: _dateDebut,
-            dateFin: _dateFin,
-            isDepenseCheck: isDepenseCheck,
-            isRevenuCheck: isRevenuCheck,
-            periode: widget.periode,
-            onChangeFilter: (map){
-              setState(() {
-                _dateDebut = map["dateDebut"];
-                _dateFin = map["dateFin"];
-                isDepenseCheck = map["depenseCheck"];
-                isRevenuCheck = map["revenuCheck"];
-              });
-            },
-          ),
+        frontLayer: ListTransaction(
+            widget.model, widget.periode, _dateDebut, _dateFin, isDepenseCheck, isRevenuCheck),
+        backLayer: FilterTransaction(
+          dateDebut: _dateDebut,
+          dateFin: _dateFin,
+          isDepenseCheck: isDepenseCheck,
+          isRevenuCheck: isRevenuCheck,
+          periode: widget.periode,
+          onChangeFilter: (map){
+            setState(() {
+              _dateDebut = map["dateDebut"];
+              _dateFin = map["dateFin"];
+              isDepenseCheck = map["depenseCheck"];
+              isRevenuCheck = map["revenuCheck"];
+            });
+          },
         ),
       ),
     );

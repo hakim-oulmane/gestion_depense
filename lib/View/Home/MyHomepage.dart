@@ -1,5 +1,6 @@
 import 'package:expenditure_management/Control/DBConnect.dart';
 import 'package:expenditure_management/Model/RecordModel.dart';
+import 'package:expenditure_management/Service/Property.dart' as prefix0;
 import 'package:expenditure_management/View/Transaction/AddTransaction.dart';
 import 'package:expenditure_management/components/SelectPeriode.dart';
 import 'package:expenditure_management/components/Drawer.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:expenditure_management/Service/Property.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'BodyHomePage.dart';
 
@@ -74,38 +76,59 @@ class _MyHomePageState extends State<MyHomePage> {
           model: _recordModel,
           child: ScopedModelDescendant<RecordModel>(
               builder: (context, child, model) {
-            return Scaffold(
-              key: scaffoldKey,
-              //app bar
-              appBar: AppBar(
-                title: Text("Accueil"),
-                centerTitle: true,
-                actions: <Widget>[
-                  SelectPeriode(
-                    periode: _periode,
-                    onChangePeriode: (value)=> setState(() => _periode = value),
-                  )
-                ],
-              ),
+                if(model.isLoading)
+                  return Scaffold(
+                    body: Container(
+                      child: buildLoading,
+                    ),
+                  );
 
-              //drawer
-              drawer: DrawerPage(_periode),
+                else {
+                  return Scaffold(
+                    key: scaffoldKey,
+                    //app bar
+                    appBar: AppBar(
+                      title: Text("Accueil"),
+                      centerTitle: true,
+                      actions: <Widget>[
+                        SelectPeriode(
+                          periode: _periode,
+                          onChangePeriode: (value) =>
+                              setState(() => _periode = value),
+                        )
+                      ],
+                    ),
 
-              //body
-              body: BodyHomePage(model, _periode),
-              floatingActionButton: FloatingActionButton(
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AddTransaction(model, _periode))),
-                child: Icon(Icons.add),
-                backgroundColor: Colors.red,
-                //Appuyez à nouveau pour quitter
-                tooltip: "Ajoutez une transaction",
-              ),
-            );
+                    //drawer
+                    drawer: DrawerPage(model, _periode),
+
+                    //body
+                    body: BodyHomePage(model, _periode),
+                    floatingActionButton: FloatingActionButton(
+                      onPressed: () =>
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      AddTransaction(model, _periode))),
+                      child: Icon(Icons.add),
+                      backgroundColor: Colors.red,
+                      //Appuyez à nouveau pour quitter
+                      tooltip: "Ajoutez une transaction",
+                    ),
+                  );
+                }
           }),
         ),
+      ),
+    );
+  }
+
+  get buildLoading{
+    return Center(
+      child: SpinKitCircle(
+        color: FIRST_COLOR,
+        size: 50.0,
       ),
     );
   }
