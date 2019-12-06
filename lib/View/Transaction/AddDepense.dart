@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:expenditure_management/Components/Calculator/calculator.dart';
 import 'package:expenditure_management/Control/CategorieImpl.dart';
 import 'package:expenditure_management/Control/MouvementImpl.dart';
 import 'package:expenditure_management/Model/Categorie.dart';
@@ -47,6 +47,14 @@ class _AddDepenseState extends State<AddDepense> {
   }
 
   @override
+  void dispose() {
+    _montantControl.dispose();
+    _dateControl.dispose();
+    _descriptionControl.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Center(
@@ -60,6 +68,7 @@ class _AddDepenseState extends State<AddDepense> {
             children: <Widget>[
               title,
               montant,
+              SizedBox(height: 10,),
               categorie,
               description,
               date,
@@ -79,31 +88,62 @@ class _AddDepenseState extends State<AddDepense> {
   }
 
   Widget get montant {
-    return Padding(
-        padding: EdgeInsets.symmetric(vertical: 10),
-        child: TextFormField(
-          validator: (String value) {
-            String msg = "Montant invalide";
-            return value != "" && double.parse(Methods.formatMontant(value)) > 0 ? null : msg;
-          },
-          controller: _montantControl,
-          style: TEXT_STYLE,
-          inputFormatters: [ThousandsFormatter(allowFraction: true)],
-          keyboardType: TextInputType.numberWithOptions(decimal: true, signed: false),
-          decoration: InputDecoration(
-              labelText: "Montant",
-              labelStyle: TEXT_STYLE,
-              hintText: "Entrez le montant",
-              suffix: Text("DA"),
-              contentPadding: EdgeInsets.only(
-                  top: 15.0,
-                  left: 10.0,
-                  right: 10.0,
-                  bottom: 15.0),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(3.0),
-              )),
-        ));
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Expanded(
+          child: TextFormField(
+            validator: (String value) {
+              String msg = "Montant invalide";
+              return value != "" && double.parse(Methods.formatMontant(value)) > 0 ? null : msg;
+            },
+            controller: _montantControl,
+            style: TEXT_STYLE,
+            inputFormatters: [ThousandsFormatter(allowFraction: true)],
+            keyboardType: TextInputType.numberWithOptions(decimal: true, signed: false),
+            decoration: InputDecoration(
+                labelText: "Montant",
+                labelStyle: TEXT_STYLE,
+                hintText: "Entrez le montant",
+                suffix: Text("DA"),
+                contentPadding: EdgeInsets.only(
+                    top: 15.0,
+                    left: 10.0,
+                    right: 10.0,
+                    bottom: 15.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(3.0),
+                )),
+          ),
+        ),
+        Container(
+            decoration: BoxDecoration(
+                border: Border.all(
+                    color: Colors.grey
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(3.0))
+            ),
+            padding: EdgeInsets.symmetric(vertical: 9, horizontal: 9),
+              child: GestureDetector(
+                child: Image.asset("assets/calculator.png",fit: BoxFit.contain, height: 30,),
+                onTap: _showCalculatorDialog
+              )
+        )
+      ],
+    );
+  }
+
+  void _showCalculatorDialog() async {
+    final result = await showCalculator(
+      context: this.context,
+      expr: _montantControl.text,
+      locale: Locale("fr"),
+    );
+
+    this._montantControl.value = this._montantControl.value.copyWith(
+      text: result?.toString() ?? _montantControl.text ?? '',
+    );
   }
 
   ///get categories
@@ -199,7 +239,7 @@ class _AddDepenseState extends State<AddDepense> {
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(3.0))
             ),
-            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 2),
             child: IconButton(
                 icon: Icon(Icons.date_range, color: SECOND_COLOR, size: 30,),
                 onPressed: _showDateTimePicker)
